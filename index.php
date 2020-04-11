@@ -1,6 +1,6 @@
 <?php
 	session_start();
-	if (isset($_SESSION['userName'])){
+	if (isset($_SESSION['userName']) && isset($_SESSION['userType'])){
 
 ?>
 <!DOCTYPE html>
@@ -113,7 +113,7 @@
 		</div>
 		<nav class="menu_nav">
 			<ul class="menu_mm">
-				<li class="menu_mm"><a href="index.html">Home</a></li>
+				<li class="menu_mm"><a href="index.php">Home</a></li>
 				<li class="menu_mm"><a href="login.php">Logout</a></li>
 			</ul>
 		</nav>
@@ -139,11 +139,28 @@
 									<div class="home_slider_form_container">
 										<form action="downloads.php" id="home_search_form_1" class="home_search_form d-flex flex-lg-row flex-column align-items-center justify-content-between">
 											<div class="d-flex flex-row align-items-center justify-content-start">
+                      <?php if($_SESSION['userType'] == 'admin'){?> 
 												<select class="dropdown_item_select home_search_input" name="grade">
 													<option value="2020">2020 A/L Theory</option>
 													<option value="2021">2021 A/L Theory</option>
 													<option value="2022">2022 A/L Theory</option>
 												</select>
+                      <?php } ?>
+                      <?php if($_SESSION['userType'] == '2020'){?> 
+												<select class="dropdown_item_select home_search_input" name="grade">
+													<option value="2020">2020 A/L Theory</option>
+												</select>
+                      <?php } ?>
+                      <?php if($_SESSION['userType'] == '2021'){?> 
+												<select class="dropdown_item_select home_search_input" name="grade">
+													<option value="2021">2021 A/L Theory</option>
+												</select>
+                      <?php } ?>
+                      <?php if($_SESSION['userType'] == '2022'){?> 
+												<select class="dropdown_item_select home_search_input" name="grade">
+													<option value="2022">2022 A/L Theory</option>
+												</select>
+                      <?php } ?>
 											</div>
 											<button type="submit" class="home_search_button">SEARCH</button>
 										</form>

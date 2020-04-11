@@ -1,7 +1,10 @@
 <?php
 	session_start();
-	if (isset($_SESSION['userName'])){
-
+	if (isset($_SESSION['userName']) && isset($_SESSION['userType'])){
+  if($_GET['grade'] != "")
+  {
+    $_SESSION['grade'] = $_GET['grade'];
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +99,7 @@
 		</div>
 		<nav class="menu_nav">
 			<ul class="menu_mm">
-				<li class="menu_mm"><a href="index.html">Home</a></li>
+				<li class="menu_mm"><a href="index.php">Home</a></li>
 				<li class="menu_mm"><a href="downloads.php">Downloads</a></li>
 				<li class="menu_mm"><a href="scripts/logout.php">Logout</a></li>
 			</ul>
@@ -112,7 +115,7 @@
 					<div class="col">
 						<div class="breadcrumbs">
 							<ul>
-								<li><a href="index.html">Home</a></li>
+								<li><a href="index.php">Home</a></li>
 								<li>Downloads</li>
 							</ul>
 						</div>
@@ -127,21 +130,29 @@
 	<div class="courses">
 		<div class="container">
 			<div class="row">
-
+			  <div class="section_title_container text-center">
+						<div class="section_subtitle"><p>Select the category and click on submit button to display each category</p></div>
+			  </div>
 				<!-- Courses Main Content -->
 				<div class="col-lg-8">
 					<div class="courses_search_container">
-						<form action="#" id="courses_search_form" class="courses_search_form d-flex flex-row align-items-center justify-content-start">
-							<select id="courses_search_select" class="courses_search_select courses_search_input">
-								<option>All Categories</option>
-								<option>Videos</option>
-								<option>Tutorials</option>
-								<option>Papers</option>
+						<form action="downloads.php" id="courses_search_form" class="courses_search_form d-flex flex-row align-items-center justify-content-start" method="GET">
+						<input type="hidden" name="grade" value="<?php $_SESSION['grade']?> ">
+						  <div class="d-flex flex-row align-items-center justify-content-start">
+							<select id="courses_search_select" class="courses_search_select courses_search_input" name="type" required>
+								<option value="">Category</option>
+								<option value="vid">Videos</option>
+								<option value="tute">MCQ/Structure</option>
+								<option value="paper">E Materials</option>
 							</select>
+							</div>
 							<button action="submit" class="courses_search_button ml-auto">Submit</button>
 						</form>
 					</div>
 				</div>
+			  </div>
+		</div>
+	</div>
 				
 	<div class="courses">
 		<div class="section_background parallax-window" data-parallax="scroll" data-image-src="images/courses_background.jpg" data-speed="0.8"></div>
@@ -151,8 +162,14 @@
 
 				<?php
 						include("scripts/db.php");
-
 						$sql = "SELECT * FROM doc WHERE docGrade=".$_GET['grade'];
+
+						if($_GET['type'])
+						{
+
+							$sql = "SELECT * FROM doc WHERE docGrade=".$_GET['grade']." and docType='".$_GET['type']."'";
+						}
+						
 
 						$result = $conn->query($sql);
 
@@ -181,7 +198,7 @@
 							if($_SESSION['userType'] == "admin"){
 								?>
 								<div class="courses_button trans_200">
-								<a href="scripts/delete.php?id=<?php echo($row['docId']) ?>.pdf" target="_blank">Delete</a>
+								<a href="scripts/delete.php?id=<?php echo($row['docId']) ?>" target="_blank">Delete</a>
 							</div>
 								<?php
 							}
@@ -198,7 +215,7 @@
 							if($_SESSION['userType'] == "admin"){
 								?>
 								<div class="courses_button trans_200">
-								<a href="scripts/delete.php?id=<?php echo($row['docId']) ?>.pdf" target="_blank">Delete</a>
+								<a href="scripts/delete.php?id=<?php echo($row['docId']) ?>" target="_blank">Delete</a>
 							</div>
 								<?php
 							}
@@ -218,7 +235,7 @@
 							if($_SESSION['userType'] == "admin"){
 								?>
 								<div class="courses_button trans_200">
-								<a href="scripts/delete.php?id=<?php echo($row['docId']) ?>.pdf" target="_blank">Delete</a>
+								<a href="scripts/delete.php?id=<?php echo($row['docId']) ?>" target="_blank">Delete</a>
 							</div>
 								<?php
 							}
@@ -240,9 +257,7 @@
 			</div>
 		</div>
 	</div>
-			</div>
-		</div>
-	</div>
+			
 
 	
 	<!-- Footer -->

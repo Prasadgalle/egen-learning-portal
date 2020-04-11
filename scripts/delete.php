@@ -124,11 +124,11 @@
 							<?php
 							include("db.php");
 							$sql = "DELETE FROM doc WHERE docId=".$_GET['id'];
-							if ($conn->query($sql) === TRUE) 
+							if ($conn->query($sql) === TRUE)
 							{
 								$msg = "Removed the file successfully.";
 							}
-							else 
+							else
 							{
 								$msg = "Oops! Something went wrong";
 							}
